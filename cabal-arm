@@ -1,0 +1,41 @@
+#!/bin/bash
+export CABAL_ENV=--builddir=dist/arm
+
+export CABAL_BLD="--with-ghc=arm-unknown-linux-gnueabihf-ghc
+                  --with-ghc-pkg=arm-unknown-linux-gnueabihf-ghc-pkg
+                  --with-ld=arm-linux-gnueabihf-ld
+                  --with-gcc=arm-linux-gnueabihf-gcc
+                  --hsc2hs-options=--cross-compile"
+
+export CABAL_CFG="--flags=\"-th\" --configure-option=--host=arm-linux-gnueabihf --disable-shared"
+
+function install {
+  pkg=$1
+  tmpDir=`mktemp -d`
+  pushd $tmpDir
+
+  cabal unpack $pkg
+  cd $pkg*
+  ghc ./$(find Setup.*hs) -o setup
+  echo $(which ghc)
+  ./setup configure $CABAL_BLD $CABAL_CFG
+  ./setup build
+  sudo ./setup install
+
+  popd
+  rm -rf $tmpDir
+}
+
+tail=${@:2}
+# Some extra options, depending on what command was invoked.
+case $1 in
+    install)           install $tail;;
+    configure)         cabal $CABAL_ENV $CABAL_BLD $CABAL_CFG "$@" ;;
+    build)             cabal $CABAL_ENV $CABAL_BLD "$@";;
+    rebuild)           cabal clean
+                       cabal $CABAL_ENV $CABAL_BLD $CABAL_CFG configure $tail
+                       cabal $CABAL_ENV $CABAL_BLD build $tail ;;
+    list|info|update)  echo "not supported" ;;
+    "")                echo "not supported" ;;
+    *)                 cabal "$@" ;;
+esac
