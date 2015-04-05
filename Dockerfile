@@ -1,9 +1,9 @@
 # mount the GHC source code into /home/ghc
 #
-#    sudo docker run --rm -i -t -v `pwd`:/home/ghc alexeyraga/ghc-docker-cross-arm /bin/bash
+#    sudo docker run --rm -i -t -v `pwd`:/home/ghc alexeyraga/ghc-cross-arm /bin/bash
 #
 
-FROM alexeyraga/ghc-docker-dev:latest
+FROM alexeyraga/ghc-dev:latest
 MAINTAINER Alexey Raga
 
 ## disable prompts from apt
