@@ -1,4 +1,6 @@
 #!/bin/bash
+
+#A WORKAROUND for https://github.com/haskell/cabal/issues/2085
 export CABAL_ENV=--builddir=dist/arm
 
 export CABAL_BLD="--with-ghc=arm-unknown-linux-gnueabihf-ghc
