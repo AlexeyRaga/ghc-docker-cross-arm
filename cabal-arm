@@ -17,7 +17,6 @@ function install {
   cabal unpack $pkg
   cd $pkg*
   ghc ./$(find Setup.*hs) -o setup
-  echo $(which ghc)
   ./setup configure $CABAL_BLD $CABAL_CFG
   ./setup build
   sudo ./setup install
