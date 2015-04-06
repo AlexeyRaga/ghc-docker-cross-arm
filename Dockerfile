@@ -54,11 +54,11 @@ RUN \
     && sudo rm /opt/ghc-cross-7.8.4/bin/ghci* /opt/ghc-cross-7.8.4/bin/run*
 
 RUN sudo ln -s /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-runghc-7.8.4 /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-runghc
-RUN sudo ln -s /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-runghc-7.8.4 /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-runghc
+
+RUN sudo ln -s /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-runghc /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-runhaskell
 
 RUN sudo ln -s /usr/bin/cabal-1.22 /usr/bin/cabal
 RUN sudo ln -s /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-ghc-7.8.4 /usr/local/bin/arm-linux-ghc-7.8.4
-RUN sudo ln -s /opt/ghc-cross-7.8.4/lib/arm-unknown-linux-gnueabihf-ghc-7.8.4 /usr/local/lib/arm-linux-ghc-7.8.4
 
 ADD ./cabal-arm /opt/cabal-arm
 RUN sudo chmod +x /opt/cabal-arm && sudo ln -s /opt/cabal-arm /usr/local/bin/cabal-arm
