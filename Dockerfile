@@ -1,6 +1,6 @@
 # mount the GHC source code into /home/ghc
 #
-#    sudo docker run --rm -i -t -v `pwd`:/home/ghc alexeyraga/ghc-cross-arm /bin/bash
+#    docker run --rm -it --privileged -v `pwd`:/home/ghc alexeyraga/ghc-cross-arm /bin/bash
 #
 
 FROM alexeyraga/ghc-dev:latest

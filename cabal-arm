@@ -9,7 +9,7 @@ export CABAL_BLD="--with-ghc=arm-unknown-linux-gnueabihf-ghc
                   --with-gcc=arm-linux-gnueabihf-gcc
                   --hsc2hs-options=--cross-compile"
 
-export CABAL_CFG="--flags=\"-th\" --configure-option=--host=arm-linux-gnueabihf --disable-shared"
+export CABAL_CFG="--flags=-th --configure-option=--host=arm-linux-gnueabihf --disable-shared"
 
 function install {
   pkg=$1
