@@ -3,7 +3,7 @@
 #    docker run --rm -it --privileged -v `pwd`:/home/ghc alexeyraga/ghc-cross-arm /bin/bash
 #
 
-FROM alexeyraga/ghc-dev:latest
+FROM alexeyraga/ghc-7.8.4:latest
 MAINTAINER Alexey Raga
 
 ## disable prompts from apt
@@ -14,8 +14,7 @@ ENV OPTS_APT        -y --force-yes --no-install-recommends
 
 RUN sudo apt-get update \
  && sudo apt-get install ${OPTS_APT} \
-    libc6-i386 lib32stdc++6 zlib1g lib32gcc1 lib32z1 
-    #\ lib32ncurses5
+    libc6-i386 lib32stdc++6 zlib1g lib32gcc1 lib32z1 lib32ncurses5
 
 RUN \
     sudo mkdir -p /opt/toolchain \
@@ -24,22 +23,12 @@ RUN \
     && rm *.tar.xz \
     && sudo ln -s /opt/toolchain/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux /opt/toolchain/gcc-linaro-arm-linux-gnueabihf
 
-# RUN \
-#     export PATH=/opt/toolchain/gcc-linaro-arm-linux-gnueabihf/bin:$PATH \
-#     && sudo mkdir -p /opt/toolchain/ncurses \
-#     && wget http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.9.tar.gz \
-#     && sudo tar zxf ncurses-5.9.tar.gz -C /opt/toolchain/ncurses/ \
-#     && rm *.tar.gz \
-#     && cd /opt/toolchain/ncurses/ncurses-5.9 \
-#     && sudo ./configure --target=arm-linux-gnueabihf --with-gcc=arm-linux-gnueabihf-gcc --with-shared --host=arm-linux-gnueabihf --with-build-cpp=arm-linux-gnueabihf-g++ --prefix=/opt/arm \
-#     && sudo make && sudo make install
-
 RUN \
     export PATH=/opt/toolchain/gcc-linaro-arm-linux-gnueabihf/bin:$PATH \
-    && wget https://www.haskell.org/ghc/dist/7.8.4/ghc-7.8.4-src.tar.bz2 \
-    && sudo tar xf ghc-7.8.4-src.tar.bz2 \
+    && wget http://downloads.haskell.org/~ghc/7.10.2/ghc-7.10.2-src.tar.bz2 \
+    && sudo tar xf ghc-7.10.2-src.tar.bz2 \
     && rm *.tar.bz2 \
-    && cd ghc-7.8.4 \
+    && cd ghc-7.10.2 \
     && sed -i 's/^PACKAGES_STAGE1 += terminfo$/\#\0/g' ghc.mk \
     && sed -i 's/^PACKAGES_STAGE1 += haskeline$/\#\0/g' ghc.mk \
     && cp mk/build.mk.sample mk/build.mk \
@@ -50,17 +39,17 @@ RUN \
     && sed -i 's/^GhcLibHcOpts *= .*$/GhcLibHcOpts = -O2/g' mk/build.mk \
     && ./configure --target=arm-linux-gnueabihf --with-gcc=arm-linux-gnueabihf-gcc --prefix=/opt/ghc-cross-7.8.4 \
     && make && sudo make install \
-    && cd .. && rm -rf ghc-7.8.4 \
-    && sudo rm /opt/ghc-cross-7.8.4/bin/ghci* /opt/ghc-cross-7.8.4/bin/run*
+    && cd .. && rm -rf ghc-7.10.2 \
+    && sudo rm /opt/ghc-cross-7.10.2/bin/ghci* /opt/ghc-cross-7.10.2/bin/run*
 
-RUN sudo ln -s /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-runghc-7.8.4 /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-runghc
+RUN sudo ln -s /opt/ghc-cross-7.10.2/bin/arm-unknown-linux-gnueabihf-runghc-7.10.2 /opt/ghc-cross-7.10.2/bin/arm-unknown-linux-gnueabihf-runghc
 
-RUN sudo ln -s /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-runghc /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-runhaskell
+RUN sudo ln -s /opt/ghc-cross-7.10.2/bin/arm-unknown-linux-gnueabihf-runghc /opt/ghc-cross-7.10.2/bin/arm-unknown-linux-gnueabihf-runhaskell
 
-RUN sudo ln -s /usr/bin/cabal-1.22 /usr/bin/cabal
-RUN sudo ln -s /opt/ghc-cross-7.8.4/bin/arm-unknown-linux-gnueabihf-ghc-7.8.4 /usr/local/bin/arm-linux-ghc-7.8.4
+RUN sudo ln -s /usr/bin/cabal-1.22 /usr/local/bin/cabal
+RUN sudo ln -s /opt/ghc-cross-7.10.2/bin/arm-unknown-linux-gnueabihf-ghc-7.10.2 /usr/local/bin/arm-linux-ghc-7.10.2
 
 ADD ./cabal-arm /opt/cabal-arm
 RUN sudo chmod +x /opt/cabal-arm && sudo ln -s /opt/cabal-arm /usr/local/bin/cabal-arm
 
-ENV PATH /opt/ghc-cross-7.8.4/bin:/opt/toolchain/gcc-linaro-arm-linux-gnueabihf/bin:$PATH 
+ENV PATH /opt/ghc-cross-7.10.2/bin:/opt/toolchain/gcc-linaro-arm-linux-gnueabihf/bin:$PATH 
