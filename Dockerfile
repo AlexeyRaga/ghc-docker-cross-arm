@@ -21,7 +21,10 @@ RUN \
     && wget http://releases.linaro.org/14.09/components/toolchain/binaries/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.xz \
     && sudo tar xJf gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.xz -C /opt/toolchain \
     && rm *.tar.xz \
-    && sudo ln -s /opt/toolchain/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux /opt/toolchain/gcc-linaro-arm-linux-gnueabihf
+
+RUN sudo ln -s /opt/toolchain/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux /opt/toolchain/gcc-linaro-arm-linux-gnueabihf
+
+RUN sudo ln -s /opt/toolchain/gcc-linaro-arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc
 
 RUN \
     export PATH=/opt/toolchain/gcc-linaro-arm-linux-gnueabihf/bin:$PATH \
@@ -37,7 +40,7 @@ RUN \
     && sed -i 's/^GhcStage1HcOpts *= .*$/GhcStage1HcOpts = -O -fasm/g' mk/build.mk \
     && sed -i 's/^GhcStage2HcOpts *= .*$/GhcStage2HcOpts = -O2 -fasm/g' mk/build.mk \
     && sed -i 's/^GhcLibHcOpts *= .*$/GhcLibHcOpts = -O2/g' mk/build.mk \
-    && ./configure --target=arm-linux-gnueabihf --with-gcc=arm-linux-gnueabihf-gcc --prefix=/opt/ghc-cross-7.8.4 \
+    && ./configure --target=arm-linux-gnueabihf --with-gcc=arm-linux-gnueabihf-gcc --prefix=/opt/ghc-cross-7.10.2 \
     && make && sudo make install \
     && cd .. && rm -rf ghc-7.10.2 \
     && sudo rm /opt/ghc-cross-7.10.2/bin/ghci* /opt/ghc-cross-7.10.2/bin/run*
