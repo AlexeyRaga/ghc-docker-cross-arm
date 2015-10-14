@@ -14,12 +14,16 @@ ENV OPTS_APT        -y --force-yes --no-install-recommends
 
 RUN sudo apt-get update \
  && sudo apt-get install ${OPTS_APT} \
-    libc6-i386 lib32stdc++6 zlib1g lib32gcc1 lib32z1 lib32ncurses5
+    libc6-i386 lib32stdc++6 zlib1g lib32gcc1 lib32z1 lib32ncurses5 \
+ && sudo apt-get clean \
+ && sudo /usr/local/bin/clean.sh
 
 RUN \
     sudo mkdir -p /opt/toolchain \
     && wget http://releases.linaro.org/14.09/components/toolchain/binaries/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.xz \
     && sudo tar xJf gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.xz -C /opt/toolchain \
+    && sudo rm -rf /opt/toolchain/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux/share/doc \
+    && sudo rm -rf /opt/toolchain/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux/share/locale \
     && rm *.tar.xz
 
 RUN sudo ln -s /opt/toolchain/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux /opt/toolchain/gcc-linaro-arm-linux-gnueabihf

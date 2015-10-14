@@ -6,6 +6,7 @@ export CABAL_ENV=--builddir=dist/arm
 export CABAL_BLD="--with-ghc=arm-unknown-linux-gnueabihf-ghc
                   --with-ghc-pkg=arm-unknown-linux-gnueabihf-ghc-pkg
                   --with-ld=arm-linux-gnueabihf-ld
+                  --with-strip=arm-linux-gnueabihf-strip
                   --with-gcc=arm-linux-gnueabihf-gcc
                   --hsc2hs-options=--cross-compile"
 
