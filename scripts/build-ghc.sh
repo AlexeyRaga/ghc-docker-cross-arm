@@ -21,8 +21,11 @@ cd .. && rm -rf ghc-${_ghc_ver}
 rm ${_ghc_target}/bin/ghci* ${_ghc_target}/bin/run*
 
 for i in `ls ${_ghc_target}/bin/*-${_ghc_ver}`; do
-   ln -s $i "`echo $i | sed 's|\(.*\)-${_ghc_ver}|\1|'`"
-   ln -s $i "`echo $i | sed 's|(-unknown)?||'`"
+   ln -s $i `echo $i | sed "s|\(.*\)-${_ghc_ver}|\1|"`
+done
+
+for i in `ls ${_ghc_target}/bin/*`; do
+   ln -s $i `echo $i | sed "s|-unknown||"`
 done
 
 find ${_ghc_target}/bin -type l -exec cp {} /usr/bin/ \;

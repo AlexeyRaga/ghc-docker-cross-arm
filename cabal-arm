@@ -8,7 +8,6 @@ export CABAL_BLD="--with-ghc=arm-unknown-linux-gnueabihf-ghc
                   --with-ld=arm-linux-gnueabihf-ld
                   --with-strip=arm-linux-gnueabihf-strip
                   --with-gcc=arm-linux-gnueabihf-gcc
-                  --with-hsc2hs=arm-linux-gnueabihf-hsc2hs
                   --hsc2hs-options=--cross-compile"
 
 export CABAL_CFG="--flags=-th --configure-option=--host=arm-linux-gnueabihf --disable-shared"
@@ -39,7 +38,7 @@ case $1 in
                        cabal $CABAL_ENV $CABAL_BLD $CABAL_CFG configure $tail
                        cabal $CABAL_ENV $CABAL_BLD build $tail ;;
     install-force)     install $tail;;
-    list|info|update)  echo "not supported" ;;
+    list|info|update)  echo "not supported, use `cabal`" ;;
     "")                echo "not supported" ;;
     *)                 cabal "$@" ;;
 esac
